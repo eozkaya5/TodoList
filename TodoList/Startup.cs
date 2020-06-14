@@ -5,9 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TodoList.Controllers;
+using TodoList.CustomValidations;
+using TodoList.Models.Authentication;
+using TodoList.Models.Context;
 
 namespace TodoList
 {
@@ -23,6 +28,30 @@ namespace TodoList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppDbContext>(_ => _.UseSqlServer(Configuration["ConnectionStrings"]));
+            services.AddIdentity<AppUser, AppRole>(_ =>
+            {
+                _.Password.RequiredLength = 5; //En az kaç karakterli olmasý gerektiðini belirtiyoruz.
+                _.Password.RequireNonAlphanumeric = false; //Alfanumerik zorunluluðunu kaldýrýyoruz.
+                _.Password.RequireLowercase = false; //Küçük harf zorunluluðunu kaldýrýyoruz.
+                _.Password.RequireUppercase = false; //Büyük harf zorunluluðunu kaldýrýyoruz.
+                _.Password.RequireDigit = false; //0-9 arasý sayýsal karakter zorunluluðunu kaldýrýyoruz.
+
+                _.User.RequireUniqueEmail = true; //Email adreslerini tekilleþtiriyoruz.
+                _.User.AllowedUserNameCharacters = "abcçdefghiýjklmnoöpqrsþtuüvwxyzABCÇDEFGHIÝJKLMNOÖPQRSÞTUÜVWXYZ0123456789-._@+"; //Kullanýcý adýnda geçerli olan karakterleri belirtiyoruz.
+            }).AddPasswordValidator<CustomPasswordValidation>()
+                .AddUserValidator<CustomUserValidation>()
+                .AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<AppDbContext>();
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Login/Login";
+                //options.AccessDeniedPath = "/Identity/Account/Access Denied";
+                options.SlidingExpiration = true;
+            });
             services.AddMvc();
         }
 
