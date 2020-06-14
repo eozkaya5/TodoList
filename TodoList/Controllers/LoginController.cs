@@ -27,30 +27,6 @@ namespace TodoList.Controllers
             return View(_userManager.Users);
         }
         [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(UserModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                AppUser appUser = new AppUser
-                {
-                    UserName = model.UserName,
-                    Email = model.Email
-                };
-                IdentityResult result = await _userManager.CreateAsync(appUser, model.Password);
-                if (result.Succeeded)
-                    return RedirectToAction("Login", "Login");
-                else
-                    result.Errors.ToList().ForEach(e => ModelState.AddModelError(e.Code, e.Description));
-            }
-            return View();
-        }
-        [HttpGet]
         public IActionResult Login(string ReturnUrl)
         {
             TempData["returnUrl"] = ReturnUrl;
@@ -81,39 +57,32 @@ namespace TodoList.Controllers
             }
             return View(model);
         }
-        public IActionResult PasswordReset()
+        [HttpGet]
+        public IActionResult Register()
         {
             return View();
         }
+
         [HttpPost]
-        public async Task<IActionResult> PasswordReset(ResetPasswordViewModel model)
+        public async Task<IActionResult> Register(UserModel model)
         {
-            AppUser user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null)
+            if (ModelState.IsValid)
             {
-                string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-                MailMessage mail = new MailMessage();
-                mail.IsBodyHtml = true;
-                mail.To.Add(user.Email);
-                mail.From = new MailAddress("******@gmail.com", "Şifre Güncelleme", System.Text.Encoding.UTF8);
-                mail.Subject = "Şifre Güncelleme Talebi";
-                mail.Body = $"<a target=\"_blank\" href=\"https://localhost:5001{Url.Action("UpdatePassword", "User", new { userId = user.Id, token = HttpUtility.UrlEncode(resetToken) })}\">Yeni şifre talebi için tıklayınız</a>";
-                mail.IsBodyHtml = true;
-                SmtpClient smp = new SmtpClient();
-                smp.Credentials = new NetworkCredential("*****@gmail.com", "******");
-                smp.Port = 587;
-                smp.Host = "smtp.gmail.com";
-                smp.EnableSsl = true;
-                smp.Send(mail);
-
-                ViewBag.State = true;
+                AppUser appUser = new AppUser
+                {
+                    UserName = model.UserName,
+                    Email = model.Email
+                };
+                IdentityResult result = await _userManager.CreateAsync(appUser, model.Password);
+                if (result.Succeeded)
+                    return RedirectToAction("Login", "Login");
+                else
+                    result.Errors.ToList().ForEach(e => ModelState.AddModelError(e.Code, e.Description));
             }
-            else
-                ViewBag.State = false;
-
             return View();
         }
+
+       
 
     }
 }
