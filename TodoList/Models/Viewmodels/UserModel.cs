@@ -8,7 +8,6 @@ namespace TodoList.Models.Viewmodels
 {
     public class UserModel
     {
-
         [Required(ErrorMessage = "Lütfen kullanıcı adını boş geçmeyiniz...")]
         [StringLength(15, ErrorMessage = "Lütfen kullanıcı adını 4 ile 15 karakter arasında giriniz...", MinimumLength = 4)]
         [Display(Name = "Kullanıcı Adı")]
@@ -20,7 +19,7 @@ namespace TodoList.Models.Viewmodels
         [Required(ErrorMessage = "Lütfen şifreyi boş geçmeyiniz...")]
         [DataType(DataType.Password, ErrorMessage = "Lütfen şifreyi tüm kuralları göz önüne alarak giriniz...")]
         [Display(Name = "Şifre")]
-        public string Sifre { get; set; }
+        public string Password { get; set; }
     }
 }
 
