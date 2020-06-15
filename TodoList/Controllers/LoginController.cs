@@ -47,7 +47,7 @@ namespace TodoList.Controllers
                     Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.Persistent, model.Lock);
 
                     if (result.Succeeded)
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("UserPage", "Home");
                 }
                 else
                 {
@@ -82,7 +82,45 @@ namespace TodoList.Controllers
             return View();
         }
 
-       
+        public IActionResult PasswordReset()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> PasswordReset(ResetPasswordViewModel model)
+        {
+            AppUser user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+            {
+                string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
+                MailMessage mail = new MailMessage();
+                mail.IsBodyHtml = true;
+                mail.To.Add(user.Email);
+                mail.From = new MailAddress("******@gmail.com", "Şifre Güncelleme", System.Text.Encoding.UTF8);
+                mail.Subject = "Şifre Güncelleme Talebi";
+                mail.Body = $"<a target=\"_blank\" href=\"https://localhost:5001{Url.Action("UpdatePassword", "User", new { userId = user.Id, token = HttpUtility.UrlEncode(resetToken) })}\">Yeni şifre talebi için tıklayınız</a>";
+                mail.IsBodyHtml = true;
+                SmtpClient smp = new SmtpClient();
+                smp.Credentials = new NetworkCredential("*****@gmail.com", "******");
+                smp.Port = 587;
+                smp.Host = "smtp.gmail.com";
+                smp.EnableSsl = true;
+                smp.Send(mail);
+
+                ViewBag.State = true;
+            }
+            else
+                ViewBag.State = false;
+
+            return View();
+        }
+      
+      
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+        }
     }
 }
