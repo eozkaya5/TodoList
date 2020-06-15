@@ -42,24 +42,24 @@
         <h1></h1>
         <!-- //title -->
         <div class="sub-main-w3">
-            <div class="image-style">
-
-            </div>
+            
             <!-- vertical tabs -->
             <div class="vertical-tab">
                 <div id="section1" class="section-w3ls">
                     <input type="radio" name="sections" id="option1" checked>
 
-                    <form amethod="post" asp-action="Login" asp-controller="Login">
-                        <div colspan="3" asp-validation-summary="All"></div>
+                    <form amethod="post" asp-action="Login" asp-controller="Login">                       
                         <h3 class="legend">Giriş yapın</h3>
                         <div class="input">
-                            <span class="fa fa-envelope-o" asp-validation-for="Email"></span>
+                            <span class="fa fa-envelope-o"></span>
                             <input type="email" asp-for="Email" placeholder="Email" />
+                            <span asp-validation-for="Email"></span>
+
                         </div>
                         <div class="input">
-                            <span class="fa fa-key" asp-validation-for="Password"></span>
+                            <span class="fa fa-key" ></span>
                             <input type="password" asp-for="Password" placeholder="Şifre" />
+                            <span  asp-validation-for="Password"></span>
                         </div>
                         <button type="submit" class="btn submit">Login</button>
 
