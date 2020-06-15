@@ -1,14 +1,12 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-
 <!DOCTYPE HTML>
-
 <html>
 <head>
     <title>Editorial by HTML5 UP</title>
     <meta charset="utf-8" />
     <title>@ViewData["Title"] - TodoList</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="~/assets/css/main.css" />
 </head>
 <body class="is-preload">
 
@@ -21,7 +19,7 @@
 
                 <!-- Header -->
                 <header id="header">
-                    <a href="index.html" class="logo"><strong>Editorial</strong> by HTML5 UP</a>
+                    <a href="index.html" class="logo"><strong>Editorial</strong>@ViewBag.UserName</a>
                     <ul class="icons">
                         <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
                         <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
@@ -30,9 +28,17 @@
                         <li><a href="#" class="icon brands fa-medium-m"><span class="label">Medium</span></a></li>
                     </ul>
                 </header>
+                <section>
+                    <div>
+                        <header>
+                            @RenderBody()
+                        </header>
+                        
+                    </div>
+                   
+                </section>
             </div>
-        </div>
-
+        </div>       
         <!-- Sidebar -->
         <div id="sidebar">
             <div class="inner">
@@ -50,36 +56,22 @@
                         <h2>Menu</h2>
                     </header>
                     <ul>
-                        <li><a asp-area="" asp-controller="Login" asp-action="Register">Homepage</a></li>
-                        <li><a href="generic.html">Generic</a></li>
-                        <li><a href="elements.html">Elements</a></li>
+                        <li><a>Anasayfa</a></li>
+                        <li><a href="generic.html">Listeler</a></li>
+                        <li><a href="elements.html">Ekle</a></li>
                         <li>
-                            <span class="opener">Submenu</span>
+                            <span class="opener">Şifre Ayarları</span>
                             <ul>
-                                <li><a href="#">Lorem Dolor</a></li>
-                                <li><a href="#">Ipsum Adipiscing</a></li>
-                                <li><a href="#">Tempus Magna</a></li>
-                                <li><a href="#">Feugiat Veroeros</a></li>
+                                <li><a asp-area="" asp-controller="Login" asp-action="Register">Üye Ol</a></li>
+                                <li><a href="#">Bilgilerim</a></li>
+                                <li><a href="#">Bilgilerini Güncelle</a></li>
+                                <li><a href="#">Şifreni Güncelle</a></li>
+
                             </ul>
-                        </li>
-                        <li><a href="#">Etiam Dolore</a></li>
-                        <li><a href="#">Adipiscing</a></li>
-                        <li>
-                            <span class="opener">Another Submenu</span>
-                            <ul>
-                                <li><a href="#">Lorem Dolor</a></li>
-                                <li><a href="#">Ipsum Adipiscing</a></li>
-                                <li><a href="#">Tempus Magna</a></li>
-                                <li><a href="#">Feugiat Veroeros</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Maximus Erat</a></li>
-                        <li><a href="#">Sapien Mauris</a></li>
-                        <li><a href="#">Amet Lacinia</a></li>
+                        <li><a asp-area="" asp-controller="Login" asp-action="Logout">Çıkış Yap</a></li>
+
                     </ul>
                 </nav>
-
-
                 <!-- Footer -->
                 <footer id="footer">
                     <p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
@@ -89,18 +81,13 @@
         </div>
 
     </div>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
+    
     <!-- Scripts -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/browser.min.js"></script>
-    <script src="assets/js/breakpoints.min.js"></script>
-    <script src="assets/js/util.js"></script>
-    <script src="assets/js/main.js"></script>
+    <script src="~/assets/js/jquery.min.js"></script>
+    <script src="~/assets/js/browser.min.js"></script>
+    <script src="~/assets/js/breakpoints.min.js"></script>
+    <script src="~/assets/js/util.js"></script>
+    <script src="~/assets/js/main.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
