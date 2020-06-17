@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,25 +32,26 @@ namespace TodoList
             services.AddDbContext<AppDbContext>(_ => _.UseSqlServer(Configuration["ConnectionStrings"]));
             services.AddIdentity<AppUser, AppRole>(_ =>
             {
-                _.Password.RequiredLength = 5; //En az kaç karakterli olmasý gerektiðini belirtiyoruz.
-                _.Password.RequireNonAlphanumeric = false; //Alfanumerik zorunluluðunu kaldýrýyoruz.
-                _.Password.RequireLowercase = false; //Küçük harf zorunluluðunu kaldýrýyoruz.
-                _.Password.RequireUppercase = false; //Büyük harf zorunluluðunu kaldýrýyoruz.
-                _.Password.RequireDigit = false; //0-9 arasý sayýsal karakter zorunluluðunu kaldýrýyoruz.
-
-                _.User.RequireUniqueEmail = true; //Email adreslerini tekilleþtiriyoruz.
                 _.User.AllowedUserNameCharacters = "abcçdefghiýjklmnoöpqrsþtuüvwxyzABCÇDEFGHIÝJKLMNOÖPQRSÞTUÜVWXYZ0123456789-._@+"; //Kullanýcý adýnda geçerli olan karakterleri belirtiyoruz.
             }).AddPasswordValidator<CustomPasswordValidation>()
                 .AddUserValidator<CustomUserValidation>()
                 .AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<AppDbContext>();
-            services.ConfigureApplicationCookie(options =>
+        
+            services.AddAuthentication("CookieAuthentication")
+                 .AddCookie("CookieAuthentication", config =>
+                 {
+                     config.Cookie.Name = "UserLoginCookie";
+                     config.LoginPath = "/Login/UserLogin";
+                 });
+
+            services.ConfigureApplicationCookie(options  =>
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
                 options.LoginPath = "/Login/Login";
-                //options.AccessDeniedPath = "/Identity/Account/Access Denied";
+                options.LogoutPath = new PathString("/User/Logout");
                 options.SlidingExpiration = true;
             });
             services.AddMvc();
@@ -74,7 +76,7 @@ namespace TodoList
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCookiePolicy();
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseAuthentication();
@@ -82,7 +84,7 @@ namespace TodoList
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Login}/{action=Login}/{id?}");
             });
         }
     }
