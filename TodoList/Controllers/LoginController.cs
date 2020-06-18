@@ -25,9 +25,8 @@ namespace TodoList.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
-
         }
-      
+
         #region Login Sayfası       
         [HttpGet]
         public IActionResult Login(string ReturnUrl)
@@ -90,5 +89,10 @@ namespace TodoList.Controllers
 
         #endregion
 
+
+        public IActionResult UserTable()
+        {
+            return View(_userManager.Users);
+        }
     }
 }
