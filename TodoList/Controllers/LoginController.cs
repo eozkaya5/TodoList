@@ -5,34 +5,37 @@ using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TodoList.Models.Authentication;
+using TodoList.Models.Context;
 using TodoList.Models.Viewmodels;
 
 namespace TodoList.Controllers
 {
     public class LoginController : Controller
-    {         
+    {
+
         readonly UserManager<AppUser> _userManager;
         readonly SignInManager<AppUser> _signInManager;
-        public LoginController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
 
+        public LoginController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+
         }
-        public IActionResult Index()
-        {
-            return View(_userManager.Users);
-        }
+      
+        #region Login Sayfası       
         [HttpGet]
         public IActionResult Login(string ReturnUrl)
         {
+
             TempData["returnUrl"] = ReturnUrl;
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
@@ -47,7 +50,8 @@ namespace TodoList.Controllers
                     Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.Persistent, model.Lock);
 
                     if (result.Succeeded)
-                        return RedirectToAction("UserPage", "Home");
+                        return RedirectToAction("Index", "Home");
+
                 }
                 else
                 {
@@ -57,12 +61,14 @@ namespace TodoList.Controllers
             }
             return View(model);
         }
+        #endregion
+
+        #region Register Sayfası
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> Register(UserModel model)
         {
@@ -82,45 +88,7 @@ namespace TodoList.Controllers
             return View();
         }
 
-        public IActionResult PasswordReset()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> PasswordReset(ResetPasswordViewModel model)
-        {
-            AppUser user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null)
-            {
-                string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+        #endregion
 
-                MailMessage mail = new MailMessage();
-                mail.IsBodyHtml = true;
-                mail.To.Add(user.Email);
-                mail.From = new MailAddress("******@gmail.com", "Şifre Güncelleme", System.Text.Encoding.UTF8);
-                mail.Subject = "Şifre Güncelleme Talebi";
-                mail.Body = $"<a target=\"_blank\" href=\"https://localhost:5001{Url.Action("UpdatePassword", "User", new { userId = user.Id, token = HttpUtility.UrlEncode(resetToken) })}\">Yeni şifre talebi için tıklayınız</a>";
-                mail.IsBodyHtml = true;
-                SmtpClient smp = new SmtpClient();
-                smp.Credentials = new NetworkCredential("*****@gmail.com", "******");
-                smp.Port = 587;
-                smp.Host = "smtp.gmail.com";
-                smp.EnableSsl = true;
-                smp.Send(mail);
-
-                ViewBag.State = true;
-            }
-            else
-                ViewBag.State = false;
-
-            return View();
-        }
-      
-      
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Login");
-        }
     }
 }
