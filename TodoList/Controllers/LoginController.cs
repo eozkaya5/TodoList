@@ -50,9 +50,9 @@ namespace TodoList.Controllers
                     await _signInManager.SignOutAsync();
                     Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.Persistent, model.Lock);
 
-                    if (result.Succeeded)
+                    if (string.IsNullOrEmpty(TempData["returnUrl"] != null ? TempData["returnUrl"].ToString() : ""))
                         return RedirectToAction("Index", "Home");
-
+                    return Redirect(TempData["returnUrl"].ToString());           
                 }
                 else
                 {
@@ -99,12 +99,12 @@ namespace TodoList.Controllers
         #endregion
 
         #region Password Reset Sayfası
-        public IActionResult Reset()
+        public IActionResult PasswordReset()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Reset(ResetPasswordViewModel model)
+        public async Task<IActionResult>PasswordReset(ResetPasswordViewModel model)
         {
             AppUser user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null)
@@ -132,38 +132,15 @@ namespace TodoList.Controllers
 
             return View();
         }
-        
-    #region Çıkış yap
-    public async Task<IActionResult> Logout()
+        #endregion
+      
+        #region Çıkış yap
+        public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }
-        #endregion
-        [HttpGet]
-        public IActionResult EditUser()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> EditUser(UserModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-                user.PhoneNumber = model.PhoneNumber;
-                IdentityResult result = await _userManager.UpdateAsync(user);
-                if (!result.Succeeded)
-                {
-                    result.Errors.ToList().ForEach(e => ModelState.AddModelError(e.Code, e.Description));
-                    return View(model);
-                }
-                await _userManager.UpdateSecurityStampAsync(user);
-                await _signInManager.SignOutAsync();
-                await _signInManager.SignInAsync(user, true);
-            }
-            return RedirectToAction("UserTable","Login");
-        }
+        #endregion      
     }
 }
 
