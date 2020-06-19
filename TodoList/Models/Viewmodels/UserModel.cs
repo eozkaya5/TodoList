@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -8,6 +10,8 @@ namespace TodoList.Models.Viewmodels
 {
     public class UserModel
     {
+        [Key]
+        public string Id { get; set; }
         [Required(ErrorMessage = "Lütfen kullanıcı adını boş geçmeyiniz...")]
         [StringLength(15, ErrorMessage = "Lütfen kullanıcı adını 4 ile 15 karakter arasında giriniz...", MinimumLength = 4)]
         [Display(Name = "Kullanıcı Adı")]
@@ -20,6 +24,7 @@ namespace TodoList.Models.Viewmodels
         [DataType(DataType.Password, ErrorMessage = "Lütfen şifreyi tüm kuralları göz önüne alarak giriniz...")]
         [Display(Name = "Şifre")]
         public string Password { get; set; }
+        public string PhoneNumber { get; internal set; }
     }
 }
 
