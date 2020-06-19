@@ -29,24 +29,27 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
+            <tr>
 
-                    <td>
+                <td>
 
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserName)
-                    </td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PasswordHash)
-                    </td>
-                </tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PasswordHash)
+                </td>
+                <td>
+                    <button asp-area="" asp-controller="Login" asp-action="EditUser" type="submit" class="btn btn-primary">Update</button>
+                </td>
+            </tr>
             }
         </tbody>
     </table>
