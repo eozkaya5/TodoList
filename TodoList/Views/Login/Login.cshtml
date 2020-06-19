@@ -10,7 +10,7 @@
 
 <head>
     <title>Yapılacaklar Listesi</title>
-    <!-- Meta tag Keywords -->  
+    <!-- Meta tag Keywords -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8" />
     <meta name="keywords" content="Yapılacaklar Listesi" />
@@ -42,36 +42,46 @@
         <h1></h1>
         <!-- //title -->
         <div class="sub-main-w3">
-            
+
             <!-- vertical tabs -->
             <div class="vertical-tab">
-                <div id="section1" class="section-w3ls">
-                    <input type="radio" name="sections" id="option1" checked>
 
-                    <form amethod="post" asp-action="Login" asp-controller="Login">                       
-                        <h3 class="legend">Giriş yapın</h3>
-                        <div class="input">
-                            <span class="fa fa-envelope-o"></span>
-                            <input type="email" asp-for="Email" placeholder="Email" />
-                            <span asp-validation-for="Email"></span>
+                <form amethod="post" asp-action="Login" asp-controller="Login">
 
+                    <h3 class="legend">Giriş yapın</h3>
+                    <div colspan="3">
+                        <div asp-validation-summary="All"></div>
+                    </div>
+                    <div class="input">
+                        <span class="fa fa-envelope-o"></span>
+                        <input type="email" asp-for="Email" placeholder="Email" />
+                        <span asp-validation-for="Email"></span>
+
+                    </div>
+                    <div class="input">
+                        <span class="fa fa-key"></span>
+                        <input type="password" asp-for="Password" placeholder="Şifre" />
+                        <span asp-validation-for="Password"></span>
+                    </div>
+
+                    <div class="flex-sb-m w-full p-t-3 p-b-32">
+                        <div class="contact100-form-checkbox">
+                            <input class="input-checkbox100" type="checkbox" asp-for="Persistent">
+
+                            @Html.DisplayNameFor(m => m.Persistent)
                         </div>
-                        <div class="input">
-                            <span class="fa fa-key" ></span>
-                            <input type="password" asp-for="Password" placeholder="Şifre" />
-                            <span  asp-validation-for="Password"></span>
-                        </div>
-                        <button type="submit" class="btn submit">Login</button>
 
-                        <label><a asp-controller="Login" asp-action="PasswordReset">Şifreyi Unuttum?</a></label>
-                        <label><a asp-action="Register">Kayıt Ol</a></label>
-                    </form>
-                </div>
+                    </div>
+                    <button type="submit" class="btn submit">Login</button>
+
+                    <label><a asp-controller="Login" asp-action="Reset">Şifreyi Unuttum?</a></label>
+                    <label><a asp-action="Register">Kayıt Ol</a></label>
+                </form>
             </div>
         </div>
-        <!-- //vertical tabs -->
-        <div class="clear"></div>
     </div>
+    <!-- //vertical tabs -->
+    <div class="clear"></div>
     <!-- copyright -->
     <div class="copyright">
         <h2>
@@ -86,3 +96,6 @@
     <script src="assets/js/main.js"></script>
 </body>
 </html>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
