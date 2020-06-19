@@ -8,6 +8,7 @@ using System.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TodoList.Models.Authentication;
 using TodoList.Models.Context;
@@ -17,7 +18,7 @@ namespace TodoList.Controllers
 {
     public class LoginController : Controller
     {
-
+        #region Manager       
         readonly UserManager<AppUser> _userManager;
         readonly SignInManager<AppUser> _signInManager;
 
@@ -26,6 +27,7 @@ namespace TodoList.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+        #endregion
 
         #region Login Sayfası       
         [HttpGet]
@@ -89,10 +91,79 @@ namespace TodoList.Controllers
 
         #endregion
 
-
+        #region Üye bilgileri tablosu     
         public IActionResult UserTable()
         {
             return View(_userManager.Users);
         }
+        #endregion
+
+        #region Password Reset Sayfası
+        public IActionResult Reset()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Reset(ResetPasswordViewModel model)
+        {
+            AppUser user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null)
+            {
+                string resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                MailMessage mail = new MailMessage();
+                mail.IsBodyHtml = true;
+                mail.To.Add(user.Email);
+                mail.From = new MailAddress("******@gmail.com", "Şifre Güncelleme", System.Text.Encoding.UTF8);
+                mail.Subject = "Şifre Güncelleme Talebi";
+                mail.Body = $"<a target=\"_blank\" href=\"https://localhost:5001{Url.Action("UpdatePassword", "Login", new { userId = user.Id, token = HttpUtility.UrlEncode(resetToken) })}\">Yeni şifre talebi için tıklayınız</a>";
+                mail.IsBodyHtml = true;
+                SmtpClient smp = new SmtpClient();
+                smp.Credentials = new NetworkCredential("ozkayaelif562@gmail.com", "ozkayaelif562");
+                smp.Port = 587;
+                smp.Host = "smtp.gmail.com";
+                smp.EnableSsl = true;
+                smp.Send(mail);
+
+                ViewBag.State = true;
+            }
+            else
+                ViewBag.State = false;
+
+            return View();
+        }
+        
+    #region Çıkış yap
+    public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+        }
+        #endregion
+        [HttpGet]
+        public IActionResult EditUser()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> EditUser(UserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+                user.PhoneNumber = model.PhoneNumber;
+                IdentityResult result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    result.Errors.ToList().ForEach(e => ModelState.AddModelError(e.Code, e.Description));
+                    return View(model);
+                }
+                await _userManager.UpdateSecurityStampAsync(user);
+                await _signInManager.SignOutAsync();
+                await _signInManager.SignInAsync(user, true);
+            }
+            return RedirectToAction("UserTable","Login");
+        }
     }
 }
+
