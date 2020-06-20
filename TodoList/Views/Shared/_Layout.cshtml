@@ -2,7 +2,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>Editorial by HTML5 UP</title>
+
+
     <meta charset="utf-8" />
     <title>@ViewData["Title"] - TodoList</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -19,7 +20,7 @@
 
                 <!-- Header -->
                 <header id="header">
-                    <a href="index.html" class="logo"><strong>Editorial</strong>@ViewBag.UserName</a>
+                    <a class="logo" asp-area="" asp-controller="Login" asp-action="User"><strong>@ViewBag.UserName</strong></a>
                     <ul class="icons">
                         <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
                         <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
@@ -33,12 +34,13 @@
                         <header>
                             @RenderBody()
                         </header>
-                        
+
                     </div>
-                   
+
                 </section>
             </div>
-        </div>       
+        </div>
+
         <!-- Sidebar -->
         <div id="sidebar">
             <div class="inner">
@@ -51,21 +53,23 @@
                 </section>
 
                 <!-- Menu -->
+
                 <nav id="menu">
                     <header class="major">
                         <h2>Menu</h2>
+
                     </header>
                     <ul>
-                        <li><a>Anasayfa</a></li>
-                        <li><a href="generic.html">Listeler</a></li>
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Anasayfa</a></li>
+                        <li><a>Listeler</a></li>
                         <li><a href="elements.html">Ekle</a></li>
                         <li>
                             <span class="opener">Şifre Ayarları</span>
                             <ul>
                                 <li><a asp-area="" asp-controller="Login" asp-action="Register">Üye Ol</a></li>
-                                <li><a href="#">Bilgilerim</a></li>
-                                <li><a href="#">Bilgilerini Güncelle</a></li>
-                                <li><a href="#">Şifreni Güncelle</a></li>
+                                <li><a asp-area="" asp-controller="Login" asp-action="UserTable">Bilgilerim</a></li>
+                                <li><a asp-area="" asp-controller="Login" asp-action="UpdatePassword">Şifre Güncelle</a></li>
+
 
                             </ul>
                         <li><a asp-area="" asp-controller="Login" asp-action="Logout">Çıkış Yap</a></li>
@@ -81,14 +85,17 @@
         </div>
 
     </div>
-    
     <!-- Scripts -->
+
     <script src="~/assets/js/jquery.min.js"></script>
     <script src="~/assets/js/browser.min.js"></script>
     <script src="~/assets/js/breakpoints.min.js"></script>
     <script src="~/assets/js/util.js"></script>
     <script src="~/assets/js/main.js"></script>
     @RenderSection("Scripts", required: false)
+
+
+
 </body>
 </html>
 

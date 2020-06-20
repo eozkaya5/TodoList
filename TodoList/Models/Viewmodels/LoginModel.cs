@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TodoList.Models.Viewmodels
 {
     public class LoginModel
-    {
+    {      
         [Required(ErrorMessage = "Lütfen e-posta adresini boş geçmeyiniz.")]
         [DataType(DataType.EmailAddress, ErrorMessage = "Lütfen uygun formatta e-posta adresi giriniz.")]
         [Display(Name = "E-Posta ")]
@@ -16,11 +16,9 @@ namespace TodoList.Models.Viewmodels
         [DataType(DataType.Password, ErrorMessage = "Lütfen uygun formatta şifre giriniz.")]
         [Display(Name = "Şifre")]
         public string Password { get; set; }
-        /// <summary>
-        /// Beni hatırla...
-        /// </summary>
         [Display(Name = "Beni Hatırla")]
         public bool Persistent { get; set; }
-        public bool Lock { get; set; }
+        public bool Lock { get; set; }        
+       }
     }
-}
+

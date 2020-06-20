@@ -35,7 +35,6 @@
           rel="stylesheet">
     <!-- //web-fonts -->
 </head>
-
 <body>
     <div class="main-bg">
         <!-- title -->
@@ -67,14 +66,13 @@
                     <div class="flex-sb-m w-full p-t-3 p-b-32">
                         <div class="contact100-form-checkbox">
                             <input class="input-checkbox100" type="checkbox" asp-for="Persistent">
-
                             @Html.DisplayNameFor(m => m.Persistent)
                         </div>
 
                     </div>
                     <button type="submit" class="btn submit">Login</button>
 
-                    <label><a asp-controller="Login" asp-action="Reset">Şifreyi Unuttum?</a></label>
+                    <label><a asp-controller="Login" asp-action="PasswordReset">Şifreyi Unuttum?</a></label>
                     <label><a asp-action="Register">Kayıt Ol</a></label>
                 </form>
             </div>
@@ -96,6 +94,3 @@
     <script src="assets/js/main.js"></script>
 </body>
 </html>
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

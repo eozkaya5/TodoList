@@ -30,7 +30,7 @@ namespace TodoList.Controllers
         #endregion
 
         #region Login Sayfası       
-        [HttpGet]
+        [HttpGet]        
         public IActionResult Login(string ReturnUrl)
         {
 
@@ -48,12 +48,10 @@ namespace TodoList.Controllers
                 {
                     //İlgili kullanıcıya dair önceden oluşturulmuş bir Cookie varsa siliyoruz.
                     await _signInManager.SignOutAsync();
-                    Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.Persistent, model.Lock);
-
-                    if (string.IsNullOrEmpty(TempData["returnUrl"] != null ? TempData["returnUrl"].ToString() : ""))
-                        return RedirectToAction("Index", "Home");
-                    return Redirect(TempData["returnUrl"].ToString());           
-                }
+                    Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.Persistent, model.Lock);            
+                        if (result.Succeeded)
+                        return RedirectToAction("Index", "Home");                  
+                }          
                 else
                 {
                     ModelState.AddModelError("NotUser", "Böyle bir kullanıcı bulunmamaktadır.");
@@ -91,7 +89,8 @@ namespace TodoList.Controllers
 
         #endregion
 
-        #region Üye bilgileri tablosu     
+        #region Üye bilgileri tablosu  
+        [Authorize]
         public IActionResult UserTable()
         {
             return View(_userManager.Users);
@@ -116,7 +115,7 @@ namespace TodoList.Controllers
                 mail.To.Add(user.Email);
                 mail.From = new MailAddress("******@gmail.com", "Şifre Güncelleme", System.Text.Encoding.UTF8);
                 mail.Subject = "Şifre Güncelleme Talebi";
-                mail.Body = $"<a target=\"_blank\" href=\"https://localhost:5001{Url.Action("UpdatePassword", "Login", new { userId = user.Id, token = HttpUtility.UrlEncode(resetToken) })}\">Yeni şifre talebi için tıklayınız</a>";
+                mail.Body = $"<a target=\"_blank\" href=\"https://localhost:5001{Url.Action("UpdatePassword", "Login", new { Id = user.Id, token = HttpUtility.UrlEncode(resetToken) })}\">Yeni şifre talebi için tıklayınız</a>";
                 mail.IsBodyHtml = true;
                 SmtpClient smp = new SmtpClient();
                 smp.Credentials = new NetworkCredential("ozkayaelif562@gmail.com", "ozkayaelif562");
@@ -133,7 +132,31 @@ namespace TodoList.Controllers
             return View();
         }
         #endregion
-      
+
+        #region Password Update Sayfası
+        [HttpGet("[action]/{Id}/{token}")]
+        public IActionResult UpdatePassword(string Id, string token)
+        {
+            return View();
+        }
+        [HttpPost("[action]/{Id}/{token}")]
+        public async Task<IActionResult> UpdatePassword(UpdatePasswordModel model, string Id, string token)
+        {
+            AppUser user = await _userManager.FindByIdAsync(Id);
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, HttpUtility.UrlDecode(token), model.Password);
+            if (result.Succeeded)
+            {
+                ViewBag.State = true;
+                await _userManager.UpdateSecurityStampAsync(user);
+                return RedirectToAction("Login","Login");
+            }
+            else
+                ViewBag.State = false;
+            return View();
+        }
+
+        #endregion
+
         #region Çıkış yap
         public async Task<IActionResult> Logout()
         {

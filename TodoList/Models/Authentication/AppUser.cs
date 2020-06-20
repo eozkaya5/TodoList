@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace TodoList.Models.Authentication
 {
     public class AppUser:IdentityUser<int>
-    {
+    {       
         public string Memleket { get; set; }
-        public bool Cinsiyet { get; set; }
+        public bool Cinsiyet { get; set; }    
     }
 }
 
