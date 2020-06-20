@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using TodoList.Models.Authentication;
-using TodoList.Models.Context;
 using TodoList.Models.Viewmodels;
 
 namespace TodoList.Controllers
@@ -30,7 +25,7 @@ namespace TodoList.Controllers
         #endregion
 
         #region Login Sayfası       
-        [HttpGet]        
+        [HttpGet]
         public IActionResult Login(string ReturnUrl)
         {
 
@@ -48,10 +43,10 @@ namespace TodoList.Controllers
                 {
                     //İlgili kullanıcıya dair önceden oluşturulmuş bir Cookie varsa siliyoruz.
                     await _signInManager.SignOutAsync();
-                    Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.Persistent, model.Lock);            
-                        if (result.Succeeded)
-                        return RedirectToAction("Index", "Home");                  
-                }          
+                    Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.Persistent, model.Lock);
+                    if (result.Succeeded)
+                        return RedirectToAction("Index", "Home");
+                }
                 else
                 {
                     ModelState.AddModelError("NotUser", "Böyle bir kullanıcı bulunmamaktadır.");
@@ -103,7 +98,7 @@ namespace TodoList.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult>PasswordReset(ResetPasswordViewModel model)
+        public async Task<IActionResult> PasswordReset(ResetPasswordViewModel model)
         {
             AppUser user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null)
@@ -148,7 +143,7 @@ namespace TodoList.Controllers
             {
                 ViewBag.State = true;
                 await _userManager.UpdateSecurityStampAsync(user);
-                return RedirectToAction("Login","Login");
+                return RedirectToAction("Login", "Login");
             }
             else
                 ViewBag.State = false;
