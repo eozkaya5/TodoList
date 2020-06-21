@@ -64,15 +64,11 @@
                         <li><a>Listeler</a></li>
                         <li><a href="elements.html">Ekle</a></li>
                         <li>
-                            <span class="opener">Şifre Ayarları</span>
-                            <ul>
-                                <li><a asp-area="" asp-controller="Login" asp-action="Register">Üye Ol</a></li>
-                                <li><a asp-area="" asp-controller="Login" asp-action="UserTable">Bilgilerim</a></li>
-                                <li><a asp-area="" asp-controller="Login" asp-action="UpdatePassword">Şifre Güncelle</a></li>
-
-
+                            <span class="opener">Ayarlar</span>
+                            <ul>                               
+                                <li><a asp-area="" asp-controller="Security" asp-action="UserUpdate">Bilgileri Güncelle</a></li>
                             </ul>
-                        <li><a asp-area="" asp-controller="Login" asp-action="Logout">Çıkış Yap</a></li>
+                        <li><a asp-area="" asp-controller="Security" asp-action="Logout">Çıkış Yap</a></li>
 
                     </ul>
                 </nav>
