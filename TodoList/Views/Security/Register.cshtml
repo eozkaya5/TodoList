@@ -43,7 +43,7 @@
         <div class="sub-main-w3">
 
             <!-- vertical tabs -->
-                                              
+
             <form amethod="post" asp-action="Register" asp-controller="Security">
 
                 <h3 class="legend">Kayıt Ol</h3>
@@ -71,8 +71,9 @@
                     <span asp-validation-for="Password"></span>
                 </div>
                 <button type="submit" class="btn submit">Kayıt Ol</button>
-                <button asp-action="Login" asp-controller="Security" type="submit" class="btn submit"> Anasayfa</button>
-            </form>                             
+
+            </form>
+            <button asp-action="Index" asp-controller="Security" class="btn submit"> <<< Giriş Sayfasına Geri Dön</button>
             <!-- //vertical tabs -->
             <div class="clear"></div>
         </div>
@@ -84,7 +85,6 @@
         </div>
         <!-- //copyright -->
     </div>
-</div>
 </body>
 
 </html>
