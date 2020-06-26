@@ -61,26 +61,30 @@
                     </header>
                     <ul>
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Anasayfa</a></li>
-                        <li><a>Listeler</a></li>
-                        <li><a href="elements.html">Ekle</a></li>
+                        <li><a asp-area="" asp-controller="Todo" asp-action="CreateList">Liste Ekle</a></li>
+                        <li><a asp-area="" asp-controller="Todo" asp-action="Index">Yapılacaklar Listesi</a></li>
                         <li>
                             <span class="opener">Ayarlar</span>
-                            <ul>                               
+                            <ul>
                                 <li><a asp-area="" asp-controller="Security" asp-action="UserUpdate">Bilgileri Güncelle</a></li>
                             </ul>
-                        <li><a asp-area="" asp-controller="Security" asp-action="Logout">Çıkış Yap</a></li>
+                            <ul>
+                                <li><a asp-area="" asp-controller="Security" asp-action="UpdatePassword">Şifre Güncelle</a></li>
+                            </ul>
 
+                        <li><a asp-area="" asp-controller="Security" asp-action="Logout">Çıkış Yap</a></li>
                     </ul>
                 </nav>
-                <!-- Footer -->
-                <footer id="footer">
-                    <p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-                </footer>
-
             </div>
-        </div>
 
+            <!-- Footer -->
+            <footer id="footer">
+                <p class="copyright">&copy; Untitled. All rights reserved. Demo Images: <a href="https://unsplash.com">Unsplash</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+            </footer>
+        </div>
     </div>
+
+
     <!-- Scripts -->
 
     <script src="~/assets/js/jquery.min.js"></script>
