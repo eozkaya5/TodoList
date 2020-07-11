@@ -1,0 +1,64 @@
+﻿
+@model IEnumerable<TodoList.Models.Entites.Todo1>
+
+<h1> Yapılacak İşler</h1>
+
+
+@DateTime.Now.ToShortDateString()
+<table class="table">
+
+
+    <tr>
+
+        <th>
+            KOD
+        </th>
+        <th>
+            BAŞLIK
+        </th>
+
+        <th>
+            OLUŞTURMA TARİHİ
+        </th>
+        <th>
+            DETAY
+        </th>
+
+        <th>
+            GÜNCELLE
+        </th>
+        <th>
+            SİL
+        </th>
+        <th></th>
+    </tr>
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.TodoId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+
+
+
+            <td>
+                <button asp-action="Detail" asp-controller="Todo" type="submit">Detay</button>
+                <button asp-action="Edit" asp-controller="Todo" type="submit">Güncelle</button>
+                <button asp-action="Delete" asp-controller="Todo" type="submit">Sil</button>
+
+            </td>
+        </tr>
+    }
+
+</table>
+      

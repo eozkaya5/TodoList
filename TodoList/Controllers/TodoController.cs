@@ -32,11 +32,6 @@ namespace TodoList.Controllers
 
         }
      
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -52,8 +47,6 @@ namespace TodoList.Controllers
             {
                 _context.Entry(todo).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 _context.SaveChanges();
-
-
             }
             catch (Exception)
             {
@@ -84,9 +77,6 @@ namespace TodoList.Controllers
 
             }
         }
-
-
-
         //public IActionResult Delete(int id)
         //{
         //    var user = _userManager.FindByNameAsync(User.Identity.Name).Result;

@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using TodoList.Migrations;
 
 namespace TodoList.Models.ListViewModel
 {
-    public class Date
+    public class UserTodoList
     {
         [Key]
-        public string DateID { get; set; }
+        public int ListID { get; set; }
         [Required(ErrorMessage = "Lütfen boş geçmeyiniz.")]
-        public DateTime StarTime { get; set; }
-        [Required(ErrorMessage = "Lütfen boş geçmeyiniz.")]
-        public DateTime EndTime { get; set; }
+        public string Date { get; set; }
+         
+
+      
+
     }
 }
-

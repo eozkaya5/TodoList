@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 
 namespace TodoList.Models.ListViewModel
 {
-    public class Date
+    public class ListStatus
     {
         [Key]
-        public string DateID { get; set; }
+        public string StatusID { get; set; }
         [Required(ErrorMessage = "Lütfen boş geçmeyiniz.")]
-        public DateTime StarTime { get; set; }
-        [Required(ErrorMessage = "Lütfen boş geçmeyiniz.")]
-        public DateTime EndTime { get; set; }
+        public string Explanation { get; set; }
     }
 }
-

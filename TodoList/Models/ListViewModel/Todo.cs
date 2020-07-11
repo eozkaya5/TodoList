@@ -10,14 +10,15 @@ namespace TodoList.Models.ListViewModel
     public class Todo
     {
         [Key]
+        public int ID { get; set; }      
+        public string Hood { get; set; }
+        public DateTime DateFormation { get; set; }
         public int ListID { get; set; }
-        [Required(ErrorMessage = "Lütfen boş geçmeyiniz.")]
-        public string Title { get; set; }
-        [Required(ErrorMessage = "Lütfen boş geçmeyiniz.")]
-        public string ListName { get; set; }
-        public int DateiID { get; set; }
+        public string Name { get; set; }
+        public string Explanation { get; set; }
         public int StatusID { get; set; }
-     
-        
+        public string ShowHomePage { get; set; }
+
+
     }
 }
