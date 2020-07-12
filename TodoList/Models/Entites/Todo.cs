@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace TodoList.Models.Entites
 {
-    public class Todo1
+    public class Todo
     {
-        [Key]
-        public int TodoId { get; set; }
+        
+        public int Id { get; set; }
         public string Name { get; set; }
         public DateTime DateTime { get; set; }
-
+        public int UserId { get; set; }
 
 
     }

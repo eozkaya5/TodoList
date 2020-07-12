@@ -9,14 +9,13 @@ namespace TodoList.Models.Entites
 {
     public class TodoItem
     {
-        [Key]
-        public int ItemId { get; set; }
-        public int ListId { get; set; }
+       
+        public int Id { get; set; }       
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime DataTime { get; set; }
+        public DateTime DateTime { get; set; }
         public int StatusId { get; set; }
-        public DateTime Date { get; set; }
+        public int TodoId { get; set; }
       
        
     }

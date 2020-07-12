@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace TodoList.Models.Entites
 {
-    public class ListeStatus
+    public class Status
     {
-        public int TodoId { get; set; }
+        public int Id { get; set; }
         public string Description { get; set; }
     }
 }
