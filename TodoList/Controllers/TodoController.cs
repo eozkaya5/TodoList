@@ -79,7 +79,9 @@ namespace TodoList.Controllers
             _context.Todos.Remove(todo);
             _context.SaveChanges();
             return RedirectToAction("Index1");
-        }      
+        }
+      
+        }
     }
 
 }
