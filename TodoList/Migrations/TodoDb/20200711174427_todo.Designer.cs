@@ -10,7 +10,7 @@ using TodoList.Models.Context;
 namespace TodoList.Migrations.TodoDb
 {
     [DbContext(typeof(TodoDbContext))]
-    [Migration("20200711000713_todo")]
+    [Migration("20200711174427_todo")]
     partial class todo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,9 +21,24 @@ namespace TodoList.Migrations.TodoDb
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TodoList.Models.Entites.Todo1", b =>
+            modelBuilder.Entity("TodoList.Models.Entites.Status", b =>
                 {
-                    b.Property<int>("TodoId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statuses");
+                });
+
+            modelBuilder.Entity("TodoList.Models.Entites.Todo", b =>
+                {
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -34,22 +49,22 @@ namespace TodoList.Migrations.TodoDb
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("TodoId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Todos");
                 });
 
             modelBuilder.Entity("TodoList.Models.Entites.TodoItem", b =>
                 {
-                    b.Property<int>("ItemId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("DataTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -64,23 +79,12 @@ namespace TodoList.Migrations.TodoDb
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.HasKey("ItemId");
+                    b.Property<int>("TodoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.ToTable("TodoItems");
-                });
-
-            modelBuilder.Entity("TodoList.Models.ListViewModel.ListStatus", b =>
-                {
-                    b.Property<string>("StatusID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Explanation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("StatusID");
-
-                    b.ToTable("ListStatuses");
                 });
 #pragma warning restore 612, 618
         }
