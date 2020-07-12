@@ -30,6 +30,7 @@ namespace TodoList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<TodoDbContext>(_ => _.UseSqlServer(Configuration["ConnectionStrings"]));
             services.AddDbContext<AppDbContext>(_ => _.UseSqlServer(Configuration["ConnectionStrings"]));
             services.AddIdentity<AppUser, AppRole>(_ =>
             {
@@ -43,20 +44,14 @@ namespace TodoList
             services.AddAuthentication("CookieAuthentication")
                  .AddCookie("CookieAuthentication", config =>
                  {
+
                      config.Cookie.Name = "UserLoginCookie";
-                     config.LoginPath = "/Login/UserLogin";
+                     config.LoginPath = "/Security/Index";
+                     config.AccessDeniedPath = "";
+                     config.ExpireTimeSpan = TimeSpan.FromSeconds(9);
+                     config.SlidingExpiration = true;
                  });
 
-            services.ConfigureApplicationCookie(options  =>
-            {
-                // Cookie settings
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-
-                options.LoginPath = "/Login/Login";
-                options.LogoutPath = new PathString("/User/Logout");
-                options.SlidingExpiration = true;
-            });
             services.AddMvc();
         }
 
@@ -77,17 +72,17 @@ namespace TodoList
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
-            app.UseCookiePolicy();
-            app.UseStatusCodePages();
-            app.UseStaticFiles();
+          
             app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseCookiePolicy();
+            app.UseStatusCodePages();                   
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Login}/{action=Login}/{id?}");
+                    pattern: "{controller=Security}/{action=Index}/{id?}");
             });
         }
     }

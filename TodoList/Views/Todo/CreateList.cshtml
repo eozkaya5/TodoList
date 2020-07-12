@@ -1,0 +1,33 @@
+﻿@model TodoList.Models.Entites.TodoItem
+@{
+   
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Ekle</title>
+</head>
+<body>
+    <h1>Yeni Yapılacak İş</h1>
+    <hr />
+    <div id="section2" class="che">
+        <form asp-controller="Todo" asp-action="CreateList" method="post" enctype="multipart/form-data">
+            <div>
+                <input type="text" asp-for="Name" placeholder="Liste" /><br />
+            </div>
+            <div>
+                <input type="text" asp-for="Description" placeholder="Açıklama" /><br />
+            </div>
+            @*<div>
+                <input type="text" asp-for="StatusId" placeholder="Başlık" /><br />
+            </div>*@
+            <button type="submit">Ekle</button>
+        </form>
+    </div>
+
+</body>
+</html>
+
+

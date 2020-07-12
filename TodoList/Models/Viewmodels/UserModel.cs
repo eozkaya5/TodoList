@@ -24,6 +24,9 @@ namespace TodoList.Models.Viewmodels
         [DataType(DataType.Password, ErrorMessage = "Lütfen şifreyi tüm kuralları göz önüne alarak giriniz...")]
         [Display(Name = "Şifre")]
         public string Password { get; set; }
+        [Display(Name = "Beni Hatırla")]
+        public bool Persistent { get; set; }
+        public bool Lock { get; set; }
         public string PhoneNumber { get; internal set; }
     }
 }

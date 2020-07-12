@@ -32,14 +32,12 @@ namespace TodoList.Controllers
         }
         #region Login Sayfası       
         [HttpGet]
-        public IActionResult Login(string ReturnUrl)
+        public IActionResult Login()
         {
-
-            TempData["returnUrl"] = ReturnUrl;
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel model)
+        public async Task<IActionResult> Login(LoginModel  model)
         {
             if (ModelState.IsValid)
             {
@@ -49,9 +47,11 @@ namespace TodoList.Controllers
                 {
 
                     await _signInManager.SignOutAsync();
-                    Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.Persistent, model.Lock);
+                    Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.Persistent,model.Lock);                 
                     if (result.Succeeded)
                         return RedirectToAction("Index", "Home");
+
+                    ModelState.AddModelError("NotUser2", "E-posta veya şifre yanlış.");
                 }
                 else
                 {
@@ -59,15 +59,12 @@ namespace TodoList.Controllers
                     ModelState.AddModelError("NotUser2", "E-posta veya şifre yanlış.");
                 }
             }
-            return View(model);
+            return View("Index");
         }
         #endregion
 
         #region Register Sayfası
-        [HttpGet]
-        
-           
-       
+        [HttpGet]     
         public IActionResult Register()
         {
             return RedirectToAction();
@@ -92,7 +89,7 @@ namespace TodoList.Controllers
                 else
                     result.Errors.ToList().ForEach(e => ModelState.AddModelError(e.Code, e.Description));
             }
-            return View();
+            return View("Index");
         }
 
         #endregion
