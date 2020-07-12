@@ -64,10 +64,7 @@ namespace TodoList.Controllers
         #endregion
 
         #region Register Sayfası
-        [HttpGet]
-        
-           
-       
+        [HttpGet]     
         public IActionResult Register()
         {
             return RedirectToAction();
