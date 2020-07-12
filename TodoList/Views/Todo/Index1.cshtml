@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<TodoList.Models.Entites.Todo1>
+@model IEnumerable<TodoList.Models.Entites.Todo>
 
 <h1> Yapılacak İşler</h1>
 
@@ -20,16 +20,7 @@
         <th>
             OLUŞTURMA TARİHİ
         </th>
-        <th>
-            DETAY
-        </th>
 
-        <th>
-            GÜNCELLE
-        </th>
-        <th>
-            SİL
-        </th>
         <th></th>
     </tr>
 
@@ -37,26 +28,33 @@
     @foreach (var item in Model)
     {
         <tr>
-
+            @*<td>
+                    <div class="col-+ col-12-small">
+                        <input type="checkbox" class="done-checkbox"><br />
+                        <input type="radio" id="demo-priority-high" name="demo-priority">
+                        <label for="demo-priority-high">Tamamlandı</label>
+                    </div>
+                </td>*@
             <td>
-                @Html.DisplayFor(modelItem => item.TodoId)
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                <input type="checkbox" checked="@item.Id" onclick="window.location.href = '/Todo/Edit/@item.Id';" />
+                <a href="/Todo/Edit/@item.Id">
+                    @item.Name
+                </a>
             </td>
 
             <td>
                 @Html.DisplayFor(modelItem => item.DateTime)
             </td>
-
-
-
             <td>
-                <button asp-action="Detail" asp-controller="Todo" type="submit">Detay</button>
-                <button asp-action="Edit" asp-controller="Todo" type="submit">Güncelle</button>
-                <button asp-action="Delete" asp-controller="Todo" type="submit">Sil</button>
-               
+
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="CreateList" asp-route-id="@item.Id">Liste ekle</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
             </td>
+
         </tr>
     }
 
