@@ -13,6 +13,7 @@ using TodoList.Models.Entites;
 namespace TodoList.Controllers
 {
 
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly TodoDbContext _context;

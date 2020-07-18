@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using TodoList.Models.Authentication;
 using TodoList.Models.Context;
 using TodoList.Models.Entites;
@@ -24,8 +28,31 @@ namespace TodoList.Controllers
         {
             ViewBag.UserName = User.Identity.Name;
             var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
-            var models = _context.TodoItems.Where(x => x.TodoId == user.Id).ToList();
+            var models = _context.Todos.Where(x => x.UserId == user.Id).ToList();
             return View(models);
+        }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Todo todo)
+        {
+            try
+            {
+                var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+                todo.DateTime = DateTime.Now;
+                todo.UserId = user.Id;
+                _context.Todos.Add(todo);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index1");
+            }
+            catch (Exception)
+            {
+                return View(todo);
+            }
         }
         public IActionResult Edit(int id)
         {
@@ -43,33 +70,6 @@ namespace TodoList.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index1");
         }
-        [HttpGet]
-        public IActionResult Add()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Add(Todo todo)
-        {
-            try
-            {
-                var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
-                todo.DateTime = DateTime.Now;
-                todo.UserId = user.Id;
-
-                _context.Todos.Add(todo);
-                _context.SaveChanges();
-
-
-                return RedirectToAction("Index1");
-            }
-            catch (Exception)
-            {
-                return View(todo);
-
-            }
-        }
         public IActionResult Delete(int id)
         {
             var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
@@ -80,8 +80,6 @@ namespace TodoList.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index1");
         }
-      
-        }
     }
-
 }
+

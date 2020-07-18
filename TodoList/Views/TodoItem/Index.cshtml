@@ -1,0 +1,41 @@
+﻿@using TodoList.Models.Entites
+@model List<TodoItem>
+<h1> Yapılacak İşler</h1>
+
+
+@DateTime.Now.ToShortDateString()
+<table class="table">
+    <tr>
+
+        <th>LİSTE KODU</th>
+        <th>LİSTE ADI</th>
+        <th>AÇIKLAMA</th>
+        <th>OLUŞTURMA TARİHİ</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>               
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Create" asp-route-id="@item.Id">Liste ekle</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
+            </td>
+        </tr>
+     }
+</table>

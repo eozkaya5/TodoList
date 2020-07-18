@@ -26,8 +26,6 @@ namespace TodoList.Controllers
         #endregion
         public IActionResult Index()
         {
-
-           
             return View();
         }
         #region Login Sayfası       
