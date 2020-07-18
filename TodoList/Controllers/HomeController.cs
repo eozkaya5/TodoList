@@ -24,7 +24,7 @@ namespace TodoList.Controllers
             _logger = logger;
             _context = context;
         }
-        [Authorize]
+    
         public IActionResult Index()
         {
             ViewBag.UserName = User.Identity.Name;

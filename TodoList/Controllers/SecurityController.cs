@@ -35,6 +35,7 @@ namespace TodoList.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginModel  model)
         {
             if (ModelState.IsValid)

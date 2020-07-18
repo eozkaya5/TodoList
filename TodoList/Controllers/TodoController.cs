@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using TodoList.Models.Viewmodels;
 
 namespace TodoList.Controllers
 {
+    [Authorize]
     public class TodoController : Controller
     {
         private readonly TodoDbContext _context;
@@ -30,6 +32,11 @@ namespace TodoList.Controllers
             var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
             var models = _context.Todos.Where(x => x.UserId == user.Id).ToList();
             return View(models);
+        }
+     
+        public IActionResult Index1()
+        {
+            return View();
         }
         [HttpGet]
         public IActionResult Create()
@@ -47,11 +54,11 @@ namespace TodoList.Controllers
                 _context.Todos.Add(todo);
                 _context.SaveChanges();
 
-                return RedirectToAction("Index1");
+                return RedirectToAction("Index");
             }
             catch (Exception)
             {
-                return View(todo);
+                return PartialView(todo);
             }
         }
         public IActionResult Edit(int id)
@@ -68,7 +75,7 @@ namespace TodoList.Controllers
             _context.Entry(todo).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.Todos.Update(todo);
             _context.SaveChanges();
-            return RedirectToAction("Index1");
+            return RedirectToAction("Index");
         }
         public IActionResult Delete(int id)
         {
@@ -78,7 +85,7 @@ namespace TodoList.Controllers
 
             _context.Todos.Remove(todo);
             _context.SaveChanges();
-            return RedirectToAction("Index1");
+            return RedirectToAction("Index");
         }
     }
 }

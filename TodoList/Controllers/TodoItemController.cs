@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Models.Context;
 using TodoList.Models.Entites;
 
 namespace TodoList.Controllers
 {
+    [Authorize]
     public class TodoItemController : Controller
     {
         private readonly TodoDbContext _context;        

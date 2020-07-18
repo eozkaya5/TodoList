@@ -32,6 +32,15 @@ namespace TodoList
         {
             services.AddDbContext<TodoDbContext>(_ => _.UseSqlServer(Configuration["ConnectionStrings"]));
             services.AddDbContext<AppDbContext>(_ => _.UseSqlServer(Configuration["ConnectionStrings"]));
+            services.AddAuthentication()
+                 .AddCookie(config =>
+                {
+                    config.Cookie.Name = "UserLoginCookie";
+                    config.LoginPath=new PathString("/Security/Index");
+                    config.AccessDeniedPath = "";
+                    config.ExpireTimeSpan = TimeSpan.FromSeconds(9);
+                    config.SlidingExpiration = true;
+                });
             services.AddIdentity<AppUser, AppRole>(_ =>
             {
                 _.Password.RequireNonAlphanumeric = false;
@@ -41,16 +50,6 @@ namespace TodoList
                 .AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<AppDbContext>()
              .AddDefaultTokenProviders();
 
-            services.AddAuthentication("CookieAuthentication")
-                 .AddCookie("CookieAuthentication", config =>
-                 {
-
-                     config.Cookie.Name = "UserLoginCookie";
-                     config.LoginPath = "/Security/Index";
-                     config.AccessDeniedPath = "";
-                     config.ExpireTimeSpan = TimeSpan.FromSeconds(9);
-                     config.SlidingExpiration = true;
-                 });
 
             services.AddMvc();
         }
@@ -72,12 +71,12 @@ namespace TodoList
             app.UseStaticFiles();
 
             app.UseRouting();
-          
+
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseCookiePolicy();
-            app.UseStatusCodePages();                   
+            app.UseStatusCodePages();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
