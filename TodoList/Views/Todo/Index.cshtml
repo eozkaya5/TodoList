@@ -1,59 +1,40 @@
 ﻿
-@model IEnumerable<TodoList.Models.Entites.TodoItem>
+@model IEnumerable<TodoList.Models.Entites.Todo>
 
 <h1> Yapılacak İşler</h1>
 
 
 @DateTime.Now.ToShortDateString()
 <table class="table">
-
-
     <tr>
-
-        <th>
-            KOD
-        </th>
-        <th>
-            BAŞLIK
-        </th>
-
-        <th>
-            OLUŞTURMA TARİHİ
-        </th>
-
+        <th>LİSTE KODU</th>
+        <th>BAŞLIK</th>
+        <th>OLUŞTURMA TARİHİ</th>
         <th></th>
     </tr>
-
-
     @foreach (var item in Model)
     {
-<tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @*<input type="checkbox" checked="@item.Id" onclick="window.location.href = '/Todo/CreateList/@item.Id';" />*@
+                <a href="/Todo/Createlist/@item.Id">
+                    @item.Name
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Güncelle</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>|
+                <a asp-action="Create" asp-route-id="@item.Id">Liste ekle</a>
 
-    <td>
-        @Html.DisplayFor(modelItem => item.Id)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Name)
-    </td>
-
-    <td>
-        @Html.DisplayFor(modelItem => item.DateTime)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.Description)
-    </td>
-    @*<td>
-        @Html.DisplayFor(modelItem => item.StatusId)
-    </td>*@
-
-    <td>
-
-        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-        <a asp-action="CreateList" asp-route-id="@item.Id">Liste ekle</a> |
-        <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>
-    </td>
-
-</tr>
+            </td>
+        </tr>
     }
-
 </table>
+<a href="/Todo/Add/" class="btn btn-primary">Yeni Liste Ekle</a>
+

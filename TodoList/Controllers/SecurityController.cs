@@ -26,8 +26,6 @@ namespace TodoList.Controllers
         #endregion
         public IActionResult Index()
         {
-
-           
             return View();
         }
         #region Login Sayfası       
@@ -37,6 +35,7 @@ namespace TodoList.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginModel  model)
         {
             if (ModelState.IsValid)

@@ -1,0 +1,23 @@
+﻿@model TodoList.Models.Entites.TodoItem
+@{
+    ViewData["Title"] = "Liste Ekle";
+}
+
+<h1>Yeni Liste Ekle</h1>
+<form asp-controller="Todo" asp-action="Create" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="TodoId" />
+    <div>
+        <label>Liste Adı</label>
+        <input type="text" asp-for="Name" placeholder="Liste Adı" /><br />
+    </div>
+    <div>
+        <label>Açıklama</label>
+        <input type="text" asp-for="Description" placeholder="Açıklama" /><br />
+    </div>
+    <div>
+        <input type="submit" value="Ekle" class="btn btn-default" />
+    </div>
+</form>
+<div>
+    <a asp-action="Index1"> Liste Sayfasına Git >> </a>
+</div>

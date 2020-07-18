@@ -13,6 +13,7 @@ using TodoList.Models.Entites;
 namespace TodoList.Controllers
 {
 
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly TodoDbContext _context;
@@ -23,7 +24,7 @@ namespace TodoList.Controllers
             _logger = logger;
             _context = context;
         }
-        [Authorize]
+    
         public IActionResult Index()
         {
             ViewBag.UserName = User.Identity.Name;

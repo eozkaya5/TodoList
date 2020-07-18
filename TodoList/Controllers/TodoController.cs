@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using TodoList.Models.Authentication;
 using TodoList.Models.Context;
 using TodoList.Models.Entites;
@@ -11,6 +16,7 @@ using TodoList.Models.Viewmodels;
 
 namespace TodoList.Controllers
 {
+    [Authorize]
     public class TodoController : Controller
     {
         private readonly TodoDbContext _context;
@@ -24,8 +30,36 @@ namespace TodoList.Controllers
         {
             ViewBag.UserName = User.Identity.Name;
             var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
-            var models = _context.TodoItems.Where(x => x.TodoId == user.Id).ToList();
+            var models = _context.Todos.Where(x => x.UserId == user.Id).ToList();
             return View(models);
+        }
+     
+        public IActionResult Index1()
+        {
+            return View();
+        }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(Todo todo)
+        {
+            try
+            {
+                var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+                todo.DateTime = DateTime.Now;
+                todo.UserId = user.Id;
+                _context.Todos.Add(todo);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                return PartialView(todo);
+            }
         }
         public IActionResult Edit(int id)
         {
@@ -41,34 +75,7 @@ namespace TodoList.Controllers
             _context.Entry(todo).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.Todos.Update(todo);
             _context.SaveChanges();
-            return RedirectToAction("Index1");
-        }
-        [HttpGet]
-        public IActionResult Add()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult Add(Todo todo)
-        {
-            try
-            {
-                var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
-                todo.DateTime = DateTime.Now;
-                todo.UserId = user.Id;
-
-                _context.Todos.Add(todo);
-                _context.SaveChanges();
-
-
-                return RedirectToAction("Index1");
-            }
-            catch (Exception)
-            {
-                return View(todo);
-
-            }
+            return RedirectToAction("Index");
         }
         public IActionResult Delete(int id)
         {
@@ -78,10 +85,8 @@ namespace TodoList.Controllers
 
             _context.Todos.Remove(todo);
             _context.SaveChanges();
-            return RedirectToAction("Index1");
-        }
-      
+            return RedirectToAction("Index");
         }
     }
-
 }
+
