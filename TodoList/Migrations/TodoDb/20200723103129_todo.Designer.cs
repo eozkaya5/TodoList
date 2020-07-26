@@ -3,21 +3,38 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TodoList.Models.Context;
 
 namespace TodoList.Migrations.TodoDb
 {
     [DbContext(typeof(TodoDbContext))]
-    partial class TodoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200723103129_todo")]
+    partial class todo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.0-preview.5.20278.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("TodoList.Models.Entites.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Description")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statuses");
+                });
 
             modelBuilder.Entity("TodoList.Models.Entites.Todo", b =>
                 {
@@ -56,13 +73,18 @@ namespace TodoList.Migrations.TodoDb
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool>("StatusId")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("StatusId1")
+                        .HasColumnType("int");
 
                     b.Property<int>("TodoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StatusId1");
 
                     b.HasIndex("TodoId");
 
@@ -71,6 +93,10 @@ namespace TodoList.Migrations.TodoDb
 
             modelBuilder.Entity("TodoList.Models.Entites.TodoItem", b =>
                 {
+                    b.HasOne("TodoList.Models.Entites.Status", "Status")
+                        .WithMany("TodoItems")
+                        .HasForeignKey("StatusId1");
+
                     b.HasOne("TodoList.Models.Entites.Todo", "Todo")
                         .WithMany("TodoItems")
                         .HasForeignKey("TodoId")

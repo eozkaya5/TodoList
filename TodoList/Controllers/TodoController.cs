@@ -25,25 +25,30 @@ namespace TodoList.Controllers
         {
             _userManager = userManager;
             _context = context;
-        }
+        }       
         public IActionResult Index()
         {
             ViewBag.UserName = User.Identity.Name;
             var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
             var models = _context.Todos.Where(x => x.UserId == user.Id).ToList();
-            return View(models);
+          
+            var t =  Tuple.Create<Todo, List<Todo>>(new Todo(),_context.Todos.ToList());
+            return View(t);
+           
         }
-     
-        public IActionResult Index1()
+        public IActionResult Detail()
         {
-            return View();
-        }
+            var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+            var models = _context.Todos.Where(x => x.UserId == user.Id).FirstOrDefault();
+            return View(models);
+        }     
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
+        //[Route("/View/Index")]
         public IActionResult Create(Todo todo)
         {
             try
@@ -58,9 +63,9 @@ namespace TodoList.Controllers
             }
             catch (Exception)
             {
-                return PartialView(todo);
+                return View(todo);
             }
-        }
+        }     
         public IActionResult Edit(int id)
         {
             var user = _userManager.FindByNameAsync(User.Identity.Name).Result;

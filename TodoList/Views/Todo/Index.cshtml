@@ -1,40 +1,57 @@
 ﻿
-@model IEnumerable<TodoList.Models.Entites.Todo>
+@model Tuple<TodoList.Models.Entites.Todo,List<TodoList.Models.Entites.Todo>>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers**
 
-<h1> Yapılacak İşler</h1>
+<h1> Yeni liste ekle</h1>
 
-
-@DateTime.Now.ToShortDateString()
-<table class="table">
-    <tr>
-        <th>LİSTE KODU</th>
-        <th>BAŞLIK</th>
-        <th>OLUŞTURMA TARİHİ</th>
-        <th></th>
-    </tr>
-    @foreach (var item in Model)
-    {
+<form asp-controller="Todo" asp-action="Create" method="post" type="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Item1.Id" />
+    <div class="">
+        <b>Liste Başlığı</b>
+        <input asp-for="Item1.Name" type="text" class="form-control" name="name" value="" /> 
+        <br />
+        <button  type="submit">Ekle</button>
+    </div>
+</form>
+<form asp-controller="Todo" asp-action="Index" method="post">
+    @DateTime.Now.ToShortDateString()
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @*<input type="checkbox" checked="@item.Id" onclick="window.location.href = '/Todo/CreateList/@item.Id';" />*@
-                <a href="/Todo/Createlist/@item.Id">
-                    @item.Name
-                </a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Güncelle</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>|
-                <a asp-action="Create" asp-route-id="@item.Id">Liste ekle</a>
-
-            </td>
+            <th></th>
+            <th>LİSTE KODU</th>
+            <th>BAŞLIK</th>
+            <th>OLUŞTURMA TARİHİ</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
-    }
-</table>
-<a href="/Todo/Add/" class="btn btn-primary">Yeni Liste Ekle</a>
+        @foreach (var item in Model.Item2)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" id="demo-human" name="Description" value="true" checked>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
 
+                <td>
+                    <a asp-controller="TodoItem" asp-action="Detail" asp-route-id="@item.Id">Daha fazla >></a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Güncelle</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>|
+
+
+                </td>
+            </tr>
+        }
+    </table>
+    <a href="/Todo/Add/" class="btn btn-primary">Yeni Liste Ekle</a>
+</form>
