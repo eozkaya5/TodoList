@@ -10,8 +10,8 @@ using TodoList.Models.Context;
 namespace TodoList.Migrations.TodoDb
 {
     [DbContext(typeof(TodoDbContext))]
-    [Migration("20200711174427_todo")]
-    partial class todo
+    [Migration("20200724220909_todo1")]
+    partial class todo1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,21 +20,6 @@ namespace TodoList.Migrations.TodoDb
                 .HasAnnotation("ProductVersion", "5.0.0-preview.5.20278.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("TodoList.Models.Entites.Status", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Statuses");
-                });
 
             modelBuilder.Entity("TodoList.Models.Entites.Todo", b =>
                 {
@@ -64,27 +49,35 @@ namespace TodoList.Migrations.TodoDb
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DataTime")
+                    b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ListId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<int>("TodoId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TodoId");
+
                     b.ToTable("TodoItems");
+                });
+
+            modelBuilder.Entity("TodoList.Models.Entites.TodoItem", b =>
+                {
+                    b.HasOne("TodoList.Models.Entites.Todo", "Todo")
+                        .WithMany("TodoItems")
+                        .HasForeignKey("TodoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
