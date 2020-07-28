@@ -100,25 +100,25 @@ namespace TodoList.Controllers
             var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
             return View(user);
         }
-        //[HttpPost]
-        //public async Task<IActionResult> UserUpdate(UserModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
-        //        user.PhoneNumber = model.PhoneNumber;
-        //        IdentityResult result = await _userManager.UpdateAsync(user);
-        //        if (!result.Succeeded)
-        //        {
-        //            result.Errors.ToList().ForEach(e => ModelState.AddModelError(e.Code, e.Description));
-        //            return View(model);
-        //        }
-        //        await _userManager.UpdateSecurityStampAsync(user);
-        //        await _signInManager.SignOutAsync();
-        //        await _signInManager.SignInAsync(user, true);
-        //    }
-        //    return RedirectToAction("Index","Security");
-        //}
+        [HttpPost]
+        public async Task<IActionResult> UserUpdate(UserModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                AppUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+                user.PhoneNumber = model.PhoneNumber;
+                IdentityResult result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    result.Errors.ToList().ForEach(e => ModelState.AddModelError(e.Code, e.Description));
+                    return View(model);
+                }
+                await _userManager.UpdateSecurityStampAsync(user);
+                await _signInManager.SignOutAsync();
+                await _signInManager.SignInAsync(user, true);
+            }
+            return RedirectToAction("Index");
+        }
 
         #endregion
 

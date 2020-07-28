@@ -19,6 +19,6 @@ namespace TodoList.Models.Entites
         public int TodoId { get; set; }
       
         public  Todo Todo { get; set; }
-        
+        //public IEnumerable<SelectListItem> ItemList { get; set; }
     }
 }

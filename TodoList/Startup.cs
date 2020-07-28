@@ -32,25 +32,40 @@ namespace TodoList
         {
             services.AddDbContext<TodoDbContext>(_ => _.UseSqlServer(Configuration["ConnectionStrings"]));
             services.AddDbContext<AppDbContext>(_ => _.UseSqlServer(Configuration["ConnectionStrings"]));
-            services.AddAuthentication()
-                 .AddCookie(config =>
-                {
-                    config.Cookie.Name = "UserLoginCookie";
-                    config.LoginPath=new PathString("/Security/Index");
-                    config.AccessDeniedPath = "";
-                    config.ExpireTimeSpan = TimeSpan.FromSeconds(9);
-                    config.SlidingExpiration = true;
-                });
+
             services.AddIdentity<AppUser, AppRole>(_ =>
             {
                 _.Password.RequireNonAlphanumeric = false;
                 _.User.AllowedUserNameCharacters = "abcçdefghiýjklmnoöpqrsþtuüvwxyzABCÇDEFGHIÝJKLMNOÖPQRSÞTUÜVWXYZ0123456789-._@+"; //Kullanýcý adýnda geçerli olan karakterleri belirtiyoruz.
             }).AddPasswordValidator<CustomPasswordValidation>()
                 .AddUserValidator<CustomUserValidation>()
-                .AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<AppDbContext>()
-             .AddDefaultTokenProviders();
-
-
+                .AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<AppDbContext>();
+                  services.ConfigureApplicationCookie(_ =>
+                  {
+                      _.LoginPath = new PathString("/Security/Index");
+                      _.Cookie = new CookieBuilder
+                      {
+                          Name = "AspNetCoreIdentityExampleCookie", //Oluþturulacak Cookie'yi isimlendiriyoruz.
+                          HttpOnly = false, //Kötü niyetli insanlarýn client-side tarafýndan Cookie'ye eriþmesini engelliyoruz.                        
+                          SameSite = SameSiteMode.Lax, //Top level navigasyonlara sebep olmayan requestlere Cookie'nin gönderilmemesini belirtiyoruz.
+                          SecurePolicy = CookieSecurePolicy.Always //HTTPS üzerinden eriþilebilir yapýyoruz.
+                      };
+                      _.SlidingExpiration = true; //Expiration süresinin yarýsý kadar süre zarfýnda istekte bulunulursa eðer geri kalan yarýsýný tekrar sýfýrlayarak ilk ayarlanan süreyi tazeleyecektir.
+                      _.ExpireTimeSpan = TimeSpan.FromMinutes(10); //CookieBuilder nesnesinde tanýmlanan Expiration deðerinin varsayýlan deðerlerle ezilme ihtimaline karþýn tekrardan Cookie vadesi burada da belirtiliyor.
+                  });
+            
+            #region 
+            // .AddDefaultTokenProviders();
+            //services.AddAuthentication()
+            //    .AddCookie(config =>
+            //    {
+            //        config.Cookie.Name = "UserLoginCookie";
+            //        config.LoginPath = new PathString("~/Security/Index");
+            //        config.AccessDeniedPath = "";
+            //        config.ExpireTimeSpan = TimeSpan.FromSeconds(9);
+            //        config.SlidingExpiration = true;
+            //    });
+            #endregion
             services.AddMvc();
         }
 
@@ -81,7 +96,7 @@ namespace TodoList
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Security}/{action=Index}/{id?}");
+                    pattern: "{controller=Todo}/{action=Index}/{id?}");
             });
         }
     }
