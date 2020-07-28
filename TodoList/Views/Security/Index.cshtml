@@ -51,31 +51,7 @@
                     <label for="option1" class="icon-left-w3pvt"><span class="fa fa-user-circle" aria-hidden="true"></span>Giriş Yap</label>
                     <article>
                         <form amethod="post" asp-action="Login" asp-controller="Security">
-
-                            <h3 class="legend">Giriş yapın</h3>
-                            <div colspan="3">
-                                <div asp-validation-summary="All"></div>
-                            </div>
-                            <div class="input">
-                                <span class="fa fa-envelope-o"></span>
-                                <input type="email" asp-for="Email" placeholder="Email" />
-                                <span asp-validation-for="Email"></span>
-
-                            </div>
-                            <div class="input">
-                                <span class="fa fa-key"></span>
-                                <input type="password" asp-for="Password" placeholder="Şifre" />
-                                <span asp-validation-for="Password"></span>
-                            </div>
-
-                            <div class="flex-sb-m w-full p-t-3 p-b-32">
-                                <div class="contact100-form-checkbox">
-                                    <input class="input-checkbox100" type="checkbox" asp-for="Persistent">
-                                    @Html.DisplayNameFor(m => m.Persistent)
-                                </div>
-
-                            </div>
-                            <button type="submit" class="btn submit">Login</button>
+                            @Html.Partial("~/Views/Security/Login.cshtml")                          
                         </form>
                     </article>
                 </div>
@@ -84,35 +60,7 @@
                     <input type="radio" name="sections" id="option2">
                     <label for="option2" class="icon-left-w3pvt"><span class="fa fa-pencil-square" aria-hidden="true"></span>Kayıt Ol</label>
                     <article>
-
-                        <form amethod="post" asp-action="Register">
-
-                            <h3 class="legend">Kayıt Ol</h3>
-                            <div colspan="3">
-                                <div asp-validation-summary="All"></div>
-                            </div>
-                            <div class="input">
-                                <span class="fa fa-user-o"></span>
-                                <input asp-for="UserName" placeholder="Kullanıcı Adı" />
-                                <span asp-validation-for="UserName"></span>
-                            </div>
-                            <div class="input">
-                                <span class="fa fa-envelope-o"></span>
-                                <input type="email" asp-for="Email" placeholder="Email" />
-                                <span asp-validation-for="Email"></span>
-                            </div>
-                            <div class="input">
-                                <span class="fa fa-mobile-phone"></span>
-                                <input type="tel" asp-for="PhoneNumber" placeholder="Telefon Numarası" />
-                                <span asp-validation-for="PhoneNumber"></span>
-                            </div>
-                            <div class="input">
-                                <span class="fa fa-key"></span>
-                                <input type="password" asp-for="Password" placeholder="Şifre" />
-                                <span asp-validation-for="Password"></span>
-                            </div>
-                            <button type="submit" class="btn submit">Kayıt Ol</button>
-                        </form>
+                        @Html.Partial("~/Views/Security/Register.cshtml")
                     </article>
                 </div>
 
@@ -120,48 +68,11 @@
                     <input type="radio" name="sections" id="option3">
                     <label for="option3" class="icon-left-w3pvt"><span class="fa fa-lock" aria-hidden="true"></span>Şifreyi Unuttum?</label>
                     <article>
-                        @if (ViewBag.State == null)
-                        {
-                            <form amethod="post" asp-action="PasswordReset" asp-controller="Security">
-                                <div>
-                                    <h3 class="legend last">Şifreyi Sıfırla</h3>
-                                    <p class="para-style">E-posta adresinizi aşağıya girin, size talimatları içeren bir e-posta gönderelim.</p>
-                                </div>
-                                <div asp-validation-summary="All"></div>
-                                <div class="input">
-                                    <span class="fa fa-envelope-o"></span>
-                                    <input type="email" asp-for="Email" placeholder="Email" />
-                                    <span asp-validation-for="Email"></span>
-                                </div>
-                                <button type="submit" class="btn submit">Şifre talebi gönder</button>
-
-                            </form>
-                        }
-                        else
-                        {
-                            if (ViewBag.State)
-                            {
-                                @:<div class="alert-success">Şifre talebi için e-posta adresinize bilgilerindirici mail gönderilmiştir.</div>
-
-
-
-
-
-
-
-
-                            }
-                            else
-                            {
-                                @:<div class="alert-success">Böyle bir e-posta bulunmamaktadır.</div>
-                            }
-                        }
-
+                        @Html.Partial("~/Views/Security/PasswordReset.cshtml")
                     </article>
                 </div>
 
             </div>
-
             <!-- //vertical tabs -->
             <div class="clear"></div>
         </div>
