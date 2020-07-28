@@ -14,7 +14,8 @@ namespace TodoList.Models.Entites
         public DateTime DateTime { get; set; }
         public int UserId { get; set; }
 
-
+        public  List<TodoItem> TodoItems { get; set; }
+       
     }
 }
 
