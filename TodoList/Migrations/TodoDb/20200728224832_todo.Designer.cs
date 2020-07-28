@@ -10,8 +10,8 @@ using TodoList.Models.Context;
 namespace TodoList.Migrations.TodoDb
 {
     [DbContext(typeof(TodoDbContext))]
-    [Migration("20200724220909_todo1")]
-    partial class todo1
+    [Migration("20200728224832_todo")]
+    partial class todo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

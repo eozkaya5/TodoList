@@ -1,24 +1,15 @@
 ﻿
-@model Tuple<TodoList.Models.Entites.Todo,List<TodoList.Models.Entites.Todo>>
+@model Tuple<TodoList.Models.Entites.Todo, List<TodoList.Models.Entites.Todo>>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers**
 
 <h1> Yeni liste ekle</h1>
+@Html.Partial("~/Views/Todo/Create.cshtml")
 
-<form asp-controller="Todo" asp-action="Create" method="post" type="multipart/form-data">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="Item1.Id" />
-    <div class="">
-        <b>Liste Başlığı</b>
-        <input asp-for="Item1.Name" type="text" class="form-control" name="name" value="" /> 
-        <br />
-        <button  type="submit">Ekle</button>
-    </div>
-</form>
 <form asp-controller="Todo" asp-action="Index" method="post">
     @DateTime.Now.ToShortDateString()
     <table class="table">
         <tr>
-            <th></th>
+
             <th>LİSTE KODU</th>
             <th>BAŞLIK</th>
             <th>OLUŞTURMA TARİHİ</th>
@@ -31,9 +22,6 @@
         {
             <tr>
                 <td>
-                    <input type="checkbox" id="demo-human" name="Description" value="true" checked>
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
@@ -44,7 +32,7 @@
                 </td>
 
                 <td>
-                    <a asp-controller="TodoItem" asp-action="Detail" asp-route-id="@item.Id">Daha fazla >></a> |
+                    <a asp-controller="TodoItem" asp-action="Index" asp-route-id="@item.Id">Daha fazla >></a> |
                     <a asp-action="Edit" asp-route-id="@item.Id">Güncelle</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>|
 
@@ -53,5 +41,4 @@
             </tr>
         }
     </table>
-    <a href="/Todo/Add/" class="btn btn-primary">Yeni Liste Ekle</a>
 </form>

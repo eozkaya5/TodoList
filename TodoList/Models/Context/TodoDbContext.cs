@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,8 @@ namespace TodoList.Models.Context
         { }
 
         public DbSet<TodoItem> TodoItems { get; set; }
-        public DbSet<Status> Statuses { get; set; }
-        public DbSet<Todo> Todos { get; set; } 
+        //public DbSet<Status> Statuses { get; set; }
+        public DbSet<Todo> Todos { get; set; }
+        public IEnumerable<SelectListItem> TodoId { get; set; }
     }
 }

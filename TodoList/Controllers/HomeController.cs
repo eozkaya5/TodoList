@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using TodoList.Models;
 using TodoList.Models.Context;
@@ -58,5 +59,36 @@ namespace TodoList.Controllers
 
 
         //}
+        [HttpGet]
+        public IActionResult Create()
+        {
+            List<SelectListItem> model = (from x in _context.Todos.ToList()
+                                          select new SelectListItem
+                                          {
+                                              Text = x.Name,
+                                              Value = x.Id.ToString()
+                                          }).ToList();
+            ViewBag.value = model;
+            //ViewData["model"] = "model";
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        // [Route("/test/elif/itemekle/{abc?}")]
+        //public ActionResult ItemEkle([FromForm]TodoItem todoItem, string abc)
+        public IActionResult Create(TodoItem todoItem)
+        {
+            if (ModelState.IsValid)
+            {
+                var item = _context.TodoItems.Where(x => x.Id == todoItem.TodoId).FirstOrDefault();
+
+                todoItem.Status = true;
+                todoItem.DateTime = DateTime.Now;
+                _context.TodoItems.Add(todoItem);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(todoItem);
+        }
     }
 }
