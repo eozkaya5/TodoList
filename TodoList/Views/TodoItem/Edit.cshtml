@@ -1,0 +1,32 @@
+﻿@model TodoList.Models.Entites.TodoItem
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h1>Liste sayfasını düzenle</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <b>Liste Başlığı</b>
+            @Html.TextBoxFor(x => x.TodoId, new { @class = "form-control" })
+            <br />
+            <b>Liste Adı</b>
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            <br />
+            <b>Açıklama</b>
+            @Html.TextBoxFor(x => x.Description, new { @class = "form-control" })
+            <br />
+            <b>Durum</b>
+            @Html.CheckBoxFor(x => x.Status, new { @class = "form-control" })
+
+        <button type="submit">Düzenle</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Detail">Back to List</a>
+</div>
+
