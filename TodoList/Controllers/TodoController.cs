@@ -30,8 +30,8 @@ namespace TodoList.Controllers
         {
             ViewBag.UserName = User.Identity.Name;
             var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
-            var t =  Tuple.Create<Todo, List<Todo>>(new Todo(),_context.Todos.Where(x => x.UserId == user.Id).ToList());
-            return View(t);
+            var model =  Tuple.Create<Todo,List<Todo>>(new Todo(),_context.Todos.Where(x => x.UserId == user.Id).ToList());
+            return View(model);
            
         }
         public IActionResult Detail()
