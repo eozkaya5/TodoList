@@ -2,21 +2,22 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 
-<form asp-controller="TodoItem" asp-action="Create" method="post">
-    <b>Liste Başlığı</b>
-    @* @Html.DropDownListFor(x => x.Todo.Id,(List<SelectListItem>)ViewBag.value, new { @class = "form-control" })*@
-    <br />
-    <b>Liste Adı</b>
-    @Html.TextBoxFor(x => x.Item1.Name, new { @class = "form-control" })
-    <br />
-    <b>Açıklama</b>
-    @Html.TextBoxFor(x => x.Item1.Description, new { @class = "form-control" })
-    <br />
-    <b>Durum</b>
-    @Html.CheckBoxFor(x => x.Item1.Status, new { @class = "form-control" })
+    <form asp-controller="TodoItem" asp-action="Create" method="post">
+        <b>Liste Başlığı</b>
+        @Html.TextBoxFor(x => x.Item1.TodoId)
+        @* @Html.DropDownListFor(x => x.Item1.Todo.Id,(IEnumerable<SelectListItem>)ViewBag.value, new { @class = "form-control" })*@
+        <br />
+        <b>Liste Adı</b>
+        @Html.TextBoxFor(x => x.Item1.Name, new { @class = "form-control" })
+        <br />
+        <b>Açıklama</b>
+        @Html.TextBoxFor(x => x.Item1.Description, new { @class = "form-control" })
+        <br />
+        <b>Durum</b>
+        @Html.CheckBoxFor(x => x.Item1.Status, new { @class = "form-control" })
 
-    <button class="btn btn-info">Ekle</button>
-</form>
+        <button class="btn btn-info">Ekle</button>
+    </form>
 
 
 
