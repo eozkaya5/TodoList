@@ -46,7 +46,6 @@ namespace TodoList.Controllers
             return View();
         }
         [HttpPost]
-        //[Route("/View/Index")]
         public IActionResult Create(Todo todo)
         {
             try
