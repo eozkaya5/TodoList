@@ -1,7 +1,9 @@
 ﻿
 @model Tuple<TodoList.Models.Entites.Todo, List<TodoList.Models.Entites.Todo>>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers**
-
+@{
+    var todoItem = @Model;
+ }
 <h1> Yeni liste ekle</h1>
 @Html.Partial("~/Views/Todo/Create.cshtml")
 
@@ -25,15 +27,16 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    <a asp-action="Index" asp-controller="TodoItem" asp-route-id="@item.Id">
+                        @item.Name
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DateTime)
                 </td>
                 <td>
-                    <a asp-controller="TodoItem" asp-action="Index" asp-route-id="@item.Id">Daha fazla >></a> |
-                    <a asp-action="Edit" asp-route-id="@item.Id">Güncelle</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Sil</a>|
+                    <a asp-controller="TodoItem" asp-action="Edit" asp-route-id="@item.Id">Güncelle</a> |
+                    <a asp-controller="TodoItem" asp-action="Delete" asp-route-id="@item.Id">Sil</a>|
                 </td>
             </tr>
         }

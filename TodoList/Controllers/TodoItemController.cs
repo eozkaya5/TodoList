@@ -25,13 +25,13 @@ namespace TodoList.Controllers
 
         public IActionResult Index(int id)
         {
-            var item = Tuple.Create<TodoItem,IEnumerable<TodoItem>>(new TodoItem(), _context.TodoItems.Include(x => x.Todo).Where(x => x.TodoId == id).ToList());
+            List<TodoItem> item = _context.TodoItems.Include(x => x.Todo).Where(x => x.TodoId == id).ToList();
+            ViewBag.TodoId = id;
             return View(item);
         }
         [HttpGet]
         public IActionResult Create(int id)
         {
-
             //IEnumerable<SelectListItem> model = (from x in _context.Todos.ToList()
             //                                     select new SelectListItem
             //                                     {
@@ -41,50 +41,89 @@ namespace TodoList.Controllers
             //ViewBag.value = model;
 
             //ViewData["TodoId"] = "TodoId";
-            var item = _context.TodoItems.Where(x => x.TodoId == id).FirstOrDefault();
-            return View(item);
+            //var item = _context.TodoItems.Where(x => x.TodoId == id).FirstOrDefault();     
+            //var item = (from todo in _context.Todos
+            //            select new TodoItem
+            //            {
+            //                Id = todo.Id,
+            //                TodoId = todo.Id,
+            //                Name = todo.Name
+            //            });
+            var todo = new TodoItem { TodoId = id };
+            return View(todo);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[Route("/TodoItem/Create/Index/{id?}")]
+        //[Route("TodoItem/Create/{id?}")]
         //public ActionResult ItemEkle([FromForm]TodoItem todoItem, string abc)
         public IActionResult Create(TodoItem todoItem)
         {
-            if (ModelState.IsValid)
+            try
             {
-                todoItem.TodoId = _context.Todos.First().Id;
-                //var item = _context.Todos.Where(x => x.Id == todoItem.Todo.Id).FirstOrDefault();
-                //    todoItem.Todo = item;
-                ViewBag.TodoId = new SelectList(_context.Todos, "Id", "Name");
-                todoItem.Status = false;
-                todoItem.DateTime = DateTime.Now;               
-                _context.TodoItems.Add(todoItem);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
+
+
+                if (ModelState.IsValid)
+                {
+                    var todo = _context.Todos.Find(todoItem.TodoId);
+                    todoItem.Status = false;
+                    todoItem.DateTime = DateTime.Now;
+                    _context.TodoItems.Add(todoItem);
+                    _context.SaveChanges();
+                    return RedirectToAction("Index", new { id = todoItem.TodoId });
+                }
+            }
+            catch (Exception)
+            {
+
+
             }
             return View(todoItem);
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var item = _context.TodoItems.Where(x => x.Id == id).FirstOrDefault();
+            var item = _context.TodoItems.FirstOrDefault(x => x.Id == id);
             return View(item);
         }
         [HttpPost]
-        public IActionResult Edit(TodoItem todoItem)
+        public IActionResult Edit(TodoItem todoItem , int id)
         {
-            _context.Entry(todoItem).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _context.TodoItems.Update(todoItem);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            try
+            {
+
+
+                if (ModelState.IsValid)
+                {
+                    var item = _context.TodoItems.FirstOrDefault(x=>x.Id==id);
+                    item.Name = todoItem.Name;
+                    item.Description = todoItem.Description;
+                    _context.SaveChanges();
+                    return RedirectToAction("Index", new { id = item.TodoId });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return View(todoItem);
         }
-      
+
         public IActionResult Delete(int id)
         {
-            var item = _context.TodoItems.Where(x => x.Id == id).FirstOrDefault();
+            var item = _context.TodoItems.Find(id);
             _context.TodoItems.Remove(item);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", new { id = item.TodoId });
+        }
+        public IActionResult UpdateStatus(int id)
+        {
+            var todo = _context.TodoItems.Find(id);
+            // var item = _context.Todos.Find(todo.TodoId);
+            todo.Status = !todo.Status;
+            _context.SaveChanges();
+            return RedirectToAction("Index", new { id = todo.TodoId });
         }
     }
 }

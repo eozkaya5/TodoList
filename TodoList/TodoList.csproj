@@ -27,8 +27,10 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0-preview.5.20278.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0-preview.5.20278.1" />
     <PackageReference Include="Microsoft.Extensions.OptionsModel" Version="1.0.0-rc1-final" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.8" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Rick.Docs.Samples.RouteInfo" Version="1.0.0.4" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 
   <ItemGroup>
