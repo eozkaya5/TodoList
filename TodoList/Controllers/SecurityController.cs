@@ -48,7 +48,7 @@ namespace TodoList.Controllers
                     await _signInManager.SignOutAsync();
                     Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, model.Password, model.Persistent,model.Lock);                 
                     if (result.Succeeded)
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Todo");
 
                     ModelState.AddModelError("NotUser2", "E-posta veya şifre yanlış.");
                 }
@@ -78,7 +78,7 @@ namespace TodoList.Controllers
                
                 AppUser appUser = new AppUser
                 {
-                    UserName = model.UserName,
+                   UserName = model.UserName,
                     Email = model.Email,
                     PhoneNumber=model.PhoneNumber
                 };

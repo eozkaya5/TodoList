@@ -5,23 +5,24 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Ekle</title>
+    <title>Düzenle</title>
 </head>
 <body>
-    <h1>Yeni Yapılacak İş</h1>
+    <h1>Yapılacak İşi Düzenle</h1>
     <hr />
     <div id="section2" class="che">
-        <form asp-controller="Todo" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <form asp-controller="Todo" asp-action="Edit" method="post" >
+            <input type="hidden" asp-for="Id" />
             <label>Liste Adı</label>
             <div>
-                <input type="text" asp-for="Name" /><br />
+                <input type="text"  class="form-control"asp-for="Name" /><br />
             </div>
             <label>Oluşturma Tarihi</label>
             <div>
-                <input type="text" asp-for="DateTime" value="@DateTime.Now.ToShortDateString()" />
+                <input type="text" asp-for="DateTime" class="form-control" value="@DateTime.Now.ToShortDateString()" />
             </div>
             <h1></h1>
-            <button type="submit">GÜncelle</button>
+            <button type="submit">Düzenle</button>
         </form>
     </div>
 </body>

@@ -32,6 +32,7 @@ namespace TodoList.Controllers
         [HttpGet]
         public IActionResult Create(int id)
         {
+            #region LinQ Sorgu
             //IEnumerable<SelectListItem> model = (from x in _context.Todos.ToList()
             //                                     select new SelectListItem
             //                                     {
@@ -49,6 +50,7 @@ namespace TodoList.Controllers
             //                TodoId = todo.Id,
             //                Name = todo.Name
             //            });
+            #endregion
             var todo = new TodoItem { TodoId = id };
             return View(todo);
         }
@@ -86,15 +88,13 @@ namespace TodoList.Controllers
             return View(item);
         }
         [HttpPost]
-        public IActionResult Edit(TodoItem todoItem , int id)
+        public IActionResult Edit(TodoItem todoItem, int id)
         {
             try
             {
-
-
                 if (ModelState.IsValid)
                 {
-                    var item = _context.TodoItems.FirstOrDefault(x=>x.Id==id);
+                    var item = _context.TodoItems.FirstOrDefault(x => x.Id == id);
                     item.Name = todoItem.Name;
                     item.Description = todoItem.Description;
                     _context.SaveChanges();
@@ -106,10 +106,8 @@ namespace TodoList.Controllers
 
                 throw;
             }
-
             return View(todoItem);
         }
-
         public IActionResult Delete(int id)
         {
             var item = _context.TodoItems.Find(id);
@@ -119,8 +117,7 @@ namespace TodoList.Controllers
         }
         public IActionResult UpdateStatus(int id)
         {
-            var todo = _context.TodoItems.Find(id);
-            // var item = _context.Todos.Find(todo.TodoId);
+            var todo = _context.TodoItems.Find(id);          
             todo.Status = !todo.Status;
             _context.SaveChanges();
             return RedirectToAction("Index", new { id = todo.TodoId });

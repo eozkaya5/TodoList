@@ -35,8 +35,8 @@
                     @Html.DisplayFor(modelItem => item.DateTime)
                 </td>
                 <td>
-                    <a asp-controller="TodoItem" asp-action="Edit" asp-route-id="@item.Id">Güncelle</a> |
-                    <a asp-controller="TodoItem" asp-action="Delete" asp-route-id="@item.Id">Sil</a>|
+                    <a asp-action="Edit" asp-route-id="@item.Id">Güncelle</a> |
+                    <a  asp-action="Delete" asp-route-id="@item.Id">Sil</a>|
                 </td>
             </tr>
         }

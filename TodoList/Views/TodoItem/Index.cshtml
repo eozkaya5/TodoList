@@ -7,22 +7,14 @@
 
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" name="TodoId" value="@ViewBag.TodoId" />
-
-    @*@foreach (var item in Model.Item2)
-        {
-            <div class="">
-
-                <h3 title="@item.Todo.Name">@item.Todo.Name</h3>
-            </div>
-        }*@
     <div class="col-5">
         <b>Liste Adı</b>
-        <input  type="text" class="form-control" name="name" value="" required />
+        <input  type="text" class="form-control" name="Name" value="" required />
         <br />
     </div>
     <div class="col-5">
         <b>Açıklama</b>
-        <input type="text" class="form-control" name="description" value="" required />
+        <input type="text" class="form-control" name="Description" value="" required />
         <br />
     </div>
   
